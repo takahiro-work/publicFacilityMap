@@ -39,7 +39,7 @@ global.params = {
 	enableTimeNav: false,
 	setCurrentLg: false,
 	showGyoseiKukaku: false, // 行政区画表示の有無
-	showAllMarkers: false, // 自治体を未選択の場合、すべてのマーカーの一括表示するか
+	showAllMarkers: true, // 自治体を未選択の場合、すべてのマーカーの一括表示するか
 	googleMaps: { 
 		apiKey: 'AIzaSyC_EVZwa4PowMAavtIei27lgc8csXIHGhg', // Google Maps API キーを設定
 		baseApiUri: 'https://maps.googleapis.com/maps/api/js?callback=instructions&libraries=places&region=JP&language=ja&key={apiKey}',
@@ -79,7 +79,7 @@ global.params = {
 	},
 	csv: { // csv(市町村窓口、施設データ)に関するパラメータ設定
 		folder: './Data/', // csvファイルの格納場所を指定
-		lGAfterFolder: '01_akachan-map/', // 市町村名(市町村セレクタメニューのvalue)のフォルダ後にフォルダ階層がある場合は指定
+		lGAfterFolder: '', // 市町村名(市町村セレクタメニューのvalue)のフォルダ後にフォルダ階層がある場合は指定
 		fileName: 'data.csv',
 		nextTimeFileName: 'data-next.csv',
 		cache: false // ブラウザキャッシュ使用の有無
