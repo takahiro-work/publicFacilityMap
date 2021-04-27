@@ -1,1 +1,1 @@
-# toiletmap
+# publicFacilityMap
