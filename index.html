@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    
+    <!-- Safari と Edge での自動電話番号リンクを無効にする -->
+    <meta name="format-detection" content="telephone=no">
+    
+    <title>大阪府 赤ちゃんの駅マップ</title>
+    <link rel="stylesheet" type="text/css" href="css/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/theme.css?version=1.0.0" />
+
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="./img/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" type="image/png" href="./img/android-touch-icon.png" sizes="192x192">
+</head>
+<body>
+
+    <!-- dialog:ページ訪問時 -->
+    <div id="dialog-readme" class="uk-modal" uk-modal>
+        <div class="uk-modal-dialog">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <div class="uk-modal-header tm-dialog-header">
+                <div class="uk-background-cover uk-height-small uk-panel uk-flex uk-flex-center uk-flex-middle tm-dialog-title">
+                    <h2 id="dialog-readme-title" class="uk-h4">
+                    </h2>
+                </div>
+            </div>
+            <div id="dialog-readme-body" class="uk-modal-body" uk-overflow-auto>
+            </div>
+            <div class="uk-modal-footer uk-text-right">
+                <button class="uk-button uk-button-primary uk-modal-close" type="button" onclick="return false;">現在地を表示</button>
+                <button class="uk-button uk-button-default uk-modal-close" type="button">閉じる</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- dialog:error -->
+    <div id="dialog-error" class="uk-modal" uk-modal>
+        <div class="uk-modal-dialog uk-margin-auto-vertical">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <div id="dialog-error-title" class="uk-modal-header"></div>
+            <div id="dialog-error-body" class="uk-modal-body"></div>
+            <div class="uk-modal-footer uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- map -->
+    <div id="map-canvas"></div>
+
+    <!-- search -->
+    <form id="search-form" onsubmit="return false">
+        <div id="search-container" class=""><div>
+        <input type="text" id="search-text-field" class="uk-input controls" placeholder="住所を検索" autocomplete="off">
+        <button type="button" value="検索" id="search-button"><span uk-icon="icon: search; ratio: 1.0"></span></button>
+        </div></div>
+    </form>
+
+    <!-- navigation -->
+    <div id="nav">
+        <input id="nav-input" type="checkbox" class="nav-unshown">
+        <label id="nav-open" for="nav-input"><span></span></label>
+        <label class="nav-unshown" id="nav-close" for="nav-input"></label>
+        <div id="nav-content">
+            <div class="triangle"></div>
+            <div id="nav-top" class="tm-nav tm-nav-top">
+                <div class="uk-form-controls">
+                    <label class="uk-form-label" for="nav-query1" hidden>市町村</label>
+                    <div class="intro">自治体を選択</div>
+                    <select class="uk-select" id="nav-query1" name="nav-query1">
+                        <option value="">－</option>
+                        <option value="01_osaka-shi">大阪市</option>
+                        <option value="02_sakai-shi">堺市</option>
+                        <option value="03_kishiwada-shi">岸和田市</option>
+                        <option value="04_toyonaka-shi">豊中市</option>
+                        <option value="05_ikeda-shi">池田市</option>
+                        <option value="06_suita-shi">吹田市</option>
+                        <option value="07_izumiotsu-shi">泉大津市</option>
+                        <option value="08_takatsuki-shi">高槻市</option>
+                        <option value="09_kaizuka-shi">貝塚市</option>
+                        <option value="10_moriguchi-shi">守口市</option>
+                        <option value="11_hirakata-shi">枚方市</option>
+                        <option value="12_ibaraki-shi">茨木市</option>
+                        <option value="13_yao-shi">八尾市</option>
+                        <option value="14_izumisano-shi">泉佐野市</option>
+                        <option value="15_tondabayashi-shi">富田林市</option>
+                        <option value="16_neyagawa-shi">寝屋川市</option>
+                        <option value="17_kawachinagano-shi">河内長野市</option>
+                        <option value="18_matsubara-shi">松原市</option>
+                        <option value="19_daito-shi">大東市</option>
+                        <option value="20_izumi-shi">和泉市</option>
+                        <option value="21_mino-shi">箕面市</option>
+                        <option value="22_kashiwara-shi">柏原市</option>
+                        <option value="23_habikino-shi">羽曳野市</option>
+                        <option value="24_kadoma-shi">門真市</option>
+                        <option value="25_settsu-shi">摂津市</option>
+                        <option value="26_takaishi-shi">高石市</option>
+                        <option value="27_fujiidera-shi">藤井寺市</option>
+                        <option value="28_higashiosaka-shi">東大阪市</option>
+                        <option value="29_sennan-shi">泉南市</option>
+                        <option value="30_shijonawate-shi">四條畷市</option>
+                        <option value="31_katano-shi">交野市</option>
+                        <option value="32_osakasayama-shi">大阪狭山市</option>
+                        <option value="33_hannan-shi">阪南市</option>
+                        <option value="34_shimamoto-cho">島本町</option>
+                        <option value="35_toyono-cho">豊能町</option>
+                        <option value="36_nose-cho">能勢町</option>
+                        <option value="37_tadaoka-cho">忠岡町</option>
+                        <option value="38_kumatori-cho">熊取町</option>
+                        <option value="39_tajiri-cho">田尻町</option>
+                        <option value="40_misaki-cho">岬町</option>
+                        <option value="41_taishi-cho">太子町</option>
+                        <option value="42_kanan-cho">河南町</option>
+                        <option value="43_chihayaakasaka-mura">千早赤阪村</option>
+                    </select>
+                </div>
+            </div>
+            <div id="nav-bottom" class="tm-nav tm-nav-bottom">
+                <div id="nav-query2-container" class="uk-form-controls">
+                    <label class="uk-form-label" for="nav-query2" hidden>時期</label>
+                    <div class="intro">時期</div>
+                    <select id="nav-query2" class="uk-select" name="nav-query2"></select>
+                </div>
+                <div id="nav-query3" class="tm-nav-checkbox">
+                    <label class="uk-form-label" for="nav-query3" hidden>利用の用途</label>
+                    <div class="intro">利用の用途</div>
+		    <label><input class="uk-checkbox" type="checkbox" name="menu-query3" value="授乳スペース"> 授乳</label><br />
+		    <label><input class="uk-checkbox" type="checkbox" name="menu-query3" value="おむつ替えスペース"> おむつ</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav-current">
+            <a href="#" id="current-location" class="uk-button" onclick="return false;"><img src="./img/current_btn.png" width="25" height="25" alt="現在地" title="現在地" /></a>
+        </div>
+    </div>
+
+    <!-- scripts -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery.csv-1.0.3.min.js"></script>
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <script src="js/jquery.functions.js?ver=1.0.0"></script>
+    <script src="js/jquery.data.js?ver=1.0.0"></script>
+    <script src="js/jquery.maps.js?ver=1.0.0"></script>
+    <script src="js/main.js?ver=1.0.0"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y2M0FCYE9T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y2M0FCYE9T');
+    </script>-->
+
+</body>
+</html>
